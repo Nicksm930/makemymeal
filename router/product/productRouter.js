@@ -1,63 +1,15 @@
 const express=require('express');
+const { getAllProducts, getProductById, createProduct, updateProductById, deleteProductById } = require('../../controller/product/productController');
 const productRouter=express.Router();
 //Get All Products
-productRouter.get('/',(req,res)=>{
-    try {
-        res.status(201).json({
-            status:"success",
-            data:"Display all Products"
-        })
-    } catch (error) {
-        
-    }
-});
+productRouter.get('/',getAllProducts);
 //Get Product By ID
-productRouter.get('/:productId', (req,res)=>{
-    try {
-        res.status(201).json({
-            status:"success",
-            data:"Get Product By ID"
-        })
-        // console.log("In getProductById");
-    } catch (error) {
-        
-    }
-});
+productRouter.get('/:productId', getProductById);
 //Create Product
-productRouter.post('/', (req,res)=>{
-    try {
-        // console.log("In createProduct");
-        res.status(201).json({
-            status:"success",
-            data:"Product has created"
-        })
-    } catch (error) {
-        
-    }
-});
+productRouter.post('/', createProduct);
 //Update Product
-productRouter.put('/:productId',(req,res)=>{
-    try {
-        // console.log("In updateProduct");
-        res.status(201).json({
-            status:"success",
-            data:"Updated Product By ID"
-        })
-    } catch (error) {
-        
-    }
-});
+productRouter.put('/:productId',updateProductById);
 //Delete Product By ID
-productRouter.delete('/:productId',(req,res)=>{
-    try {
-        // console.log("In deleteProduct");
-        res.status(201).json({
-            status:"success",
-            data:"Product has Deleted by ID"
-        })
-    } catch (error) {
-        
-    }
-});
+productRouter.delete('/:productId',deleteProductById);
 
 module.exports=productRouter;
