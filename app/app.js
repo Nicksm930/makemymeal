@@ -1,5 +1,6 @@
 const express=require('express');
 const morgan=require('morgan');
+// const bodyParser = require("body-parser");
 require('dotenv').config();
 const productRouter=require('../router/product/productRouter');
 const userRouter = require('../router/user/userRouter');
@@ -16,7 +17,10 @@ else{
 }
 
 //middleware
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+app.use(express.json());//Accept Incoming payloads
+
 //Routes Folder
 // Product Endpoints
 app.use(`${baseUrl}products`,productRouter);
