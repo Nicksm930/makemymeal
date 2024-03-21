@@ -1,59 +1,63 @@
+const Product=require('../../model/product/product')
+require('../../config/dbConnect');
+const multer = require('multer');
+
 //Get All Products
-exports.getAllProducts=(req,res)=>{
+exports.getAllProducts=async(req,res)=>{
     try {
-        res.status(201).json({
-            status:"success",
-            data:"Display all Products"
-        })
-    } catch (error) {
-        
+        const products = await Product.find();
+        res.json(products);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 }
 //Get Product By ID
-exports.getProductById=(req,res)=>{
+exports.getProductById=async(req,res)=>{
     try {
-        res.status(201).json({
-            status:"success",
-            data:"Get Product By ID"
-        })
-        // console.log("In getProductById");
-    } catch (error) {
-        
+        const product = await Product.findById(req.params.productId);
+        if (product) {
+            res.json(product);
+        } else {
+            res.status(404).json({ message: 'Product not found' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 }
 //Create Product
-exports.createProduct= (req,res)=>{
+exports.createProduct= async(req,res)=>{
     try {
-        // console.log("In createProduct");
-        res.status(201).json({
-            status:"success",
-            data:"Product has created"
-        })
-    } catch (error) {
-        
+        const product = new Product(req.body);
+        const newProduct = await product.save();
+        res.status(201).json(newProduct);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
     }
+      
 }
 //Update Product
-exports.updateProductById=(req,res)=>{
+exports.updateProductById=async(req,res)=>{
     try {
-        // console.log("In updateProduct");
-        res.status(201).json({
-            status:"success",
-            data:"Updated Product By ID"
-        })
-    } catch (error) {
-        
+        const updatedProduct = await Product.findByIdAndUpdate(req.params.productId, req.body, { new: true });
+        if (updatedProduct) {
+            res.json(updatedProduct);
+        } else {
+            res.status(404).json({ message: 'Product not found' });
+        }
+    } catch (err) {
+        res.status(400).json({ message: err.message });
     }
 }
 //Delete Product By ID
-exports.deleteProductById=(req,res)=>{
+exports.deleteProductById=async(req,res)=>{
     try {
-        // console.log("In deleteProduct");
-        res.status(201).json({
-            status:"success",
-            data:"Product has Deleted by ID"
-        })
-    } catch (error) {
-        
+        const deletedProduct = await Product.findByIdAndDelete(req.params.productId);
+        if (deletedProduct) {
+            res.json({ message: 'Product deleted' });
+        } else {
+            res.status(404).json({ message: 'Product not found' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 }
